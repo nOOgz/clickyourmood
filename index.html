@@ -1,0 +1,21 @@
+<html>
+  <body>
+    {% for moodpair in moodpairs %}
+    {{ moodpair.key.id}}<br />
+    {% for mood in moodpair.moods %}
+    {{ mood.name }}<br />
+    {% endfor %}
+    <br />
+    
+    {% endfor %}
+
+    <form action="/add" method="post">
+      <div><input type=text name="mood1" size="20"></div>
+      <div><input type=text name="mood2" size="20"></div>
+      <div><input type="submit" value="Add Moods"></div>
+    </form>
+
+    <a href="{{ url }}">{{ url_linktext }}</a>
+
+  </body>
+</html>
