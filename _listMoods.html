@@ -1,0 +1,17 @@
+
+<strong>Moods</strong><br />
+(* click any mood to delete its pair.)<br />
+
+<br clear="all"/>
+
+<div id="moodList">
+  {% for moodpair in moodpairs %}
+    <label class="rmmood" id="{{ moodpair }}" value="{{ moodpair.Key }}">
+    {% for mood in moodpair %}
+      {{ mood.name }} ({{ mood.count }})
+      <br />
+    {% endfor %}
+    </label> 
+  <br />
+  {% endfor %}
+</div>

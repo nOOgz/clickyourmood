@@ -1,21 +1,26 @@
 <html>
+  <head>
+    <link href="/css/main.css " rel="stylesheet" type="text/css" />
+    <script src="js/lib/jquery-1.3.2.min.js"></script>
+    <script src="/js/vote.js"></script>
+  </head>
+
   <body>
-    {% for moodpair in moodpairs %}
-    {{ moodpair.key.id}}<br />
-    {% for mood in moodpair.moods %}
-    {{ mood.name }}<br />
-    {% endfor %}
+  <div class="pageContainer">
+    <div id="headline" align="center">
+      <h1>Click your Mood!</h1>
+    </div>
+      
+    <div id="moods" align="center">
+      {% for mood in displayMoodPair %}
+        <div id="moody" style="float: left; width: 50%">
+          <label class="moodlink" id="{{ displayMoodPair.Key }}" value="{{ mood.key }}">{{ mood.name }}</label>
+        </div>
+        {% endfor %}
+    </div>
     <br />
     
-    {% endfor %}
-
-    <form action="/add" method="post">
-      <div><input type=text name="mood1" size="20"></div>
-      <div><input type=text name="mood2" size="20"></div>
-      <div><input type="submit" value="Add Moods"></div>
-    </form>
-
     <a href="{{ url }}">{{ url_linktext }}</a>
-
+  </div>
   </body>
 </html>

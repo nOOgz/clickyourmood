@@ -1,4 +1,14 @@
-body {
-  font-family: Verdana, Helvetica, sans-serif;
-  background-color: #DDDDDD;
-}
+/* YUI Fonts - Shifted from 13px to 11px */
+body { font:11px/1.231 'Lucida Grande','Lucida Sans',Lucida,Arial,Helvetica,clean,sans-serif;*font-size:small;*font:x-small; background-color: #DDDDDD;}
+
+select,input,button,textarea { font:99% 'Lucida Grande','Lucida Sans',Lucida,Arial,Helvetica,clean,sans-serif; }
+table {	font-size:inherit;font:100%; }
+pre,code,kbd,samp,tt { font-family:monospace;*font-size:108%;line-height:100%; }
+
+.error {color: #990000}
+
+#moodInputButton { margin-left: 20px; }
+#moods { padding-top: 100px;}
+#moody { font-size: 33px; color: blue;  }
+#moody label { cursor: pointer; }
+#addMoods { padding: 5px; }

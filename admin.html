@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <link href="/css/main.css " rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/lib/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="/js/lib/jquery.spinner.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.form.js"></script>
+    <script type="text/javascript" src="/js/admin.js"></script>
+    
+		<script type="text/javascript">
+			$().ready(function() {
+
+	    });
+		    </script>
+		
+  </head>
+  <body>
+    <div id="notify"></div>
+    <div id="error_display">
+      {% for error in errors %}
+      {{ error }} <br />
+      {% endfor %}
+    </div>
+    <h2>Enter New Pair of Moods</h2>
+    
+    <div id="addMoods">
+      <form id="addMoodsForm" action="/add" method="post">
+        <div><input type=text id="mood1" name="mood1" size="20"></div>
+        <br />
+        <div><input type=text id="mood2" name="mood2" size="20"></div>
+        <br />
+        <div id="moodInputButton"><input type="image" src="/img/addmoodbutton.png" value="Add Moodpair"></div>
+      </form>
+    </div>
+
+    <div id="moodDisplay"></div>
+    
+  </body>
+</html>
