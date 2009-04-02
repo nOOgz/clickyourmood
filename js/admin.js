@@ -20,14 +20,9 @@ var admin = {
     $('#addMoodsForm').ajaxForm({
           beforeSubmit:  inputCheck,
           success: function() {
-                                // if(accountDisabled) {
-                                //     location.href = admin.url;
-                                // }
-//                                $('#listMoods').
                                 $('#notify').html("Moods Added!");
                                 $('#notify').fadeIn(800);
                                 admin.loadMoods();
-                                var timer = setTimeout("$('#notify').fadeOut(1000);clearTimeout(timer);", 3000);
                                 }
     });
     
@@ -55,15 +50,13 @@ function inputCheck(formData)
 {
   if((formData[0].name == "mood1") && (formData[0].name == "mood1"))
   {
-    if((formData[0].value != "") || (formData[0].value != ""))
+    if((formData[0].value != "") && (formData[1].value != "") && (formData[0].value != "Enter Mood"))
     {
-      var message = "please enter two words that make up a Pair of opposite moods.";
       return true;
     }
   }
   $('#notify').html("<strong class=\"error\">please enter two words that make up a Pair of opposite moods.</strong>");
   $('#notify').fadeIn(800);
-  var timer = setTimeout("$('#notify').fadeOut(1000);clearTimeout(timer);", 3000);
 
     return false;
 }

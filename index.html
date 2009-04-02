@@ -11,14 +11,9 @@
       <h1>Click your Mood!</h1>
     </div>
       
-    <div id="moods" align="center">
-      {% for mood in displayMoodPair %}
-        <div id="moody" style="float: left; width: 50%">
-          <label class="moodlink" id="{{ displayMoodPair.Key }}" value="{{ mood.key }}">{{ mood.name }}</label>
-        </div>
-        {% endfor %}
-    </div>
+    <div id="moods" align="center"></div>
     <br />
+    <div id="stats" align="center"></div>
     
     <a href="{{ url }}">{{ url_linktext }}</a>
   </div>

@@ -1,0 +1,6 @@
+
+{% for mood in displayMoodPair %}
+  <div id="moody" style="float: left; width: 50%">
+    <label class="moodlink" id="{{ mood.moodpair_id.key }}" value="{{ mood.key }}">{{ mood.name }}</label>
+  </div>
+{% endfor %}

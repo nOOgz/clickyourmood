@@ -3,6 +3,7 @@ import os
 import logging
 import random
 import datetime
+from django.utils import simplejson
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
@@ -13,34 +14,40 @@ from google.appengine.ext import db
 # Set to true if we want to have our webapp print stack traces, etc
 _DEBUG = True
 
-class Mood(db.Model):
-	name = db.StringProperty(required=True)
-	count = db.IntegerProperty(default=0)
-	created = db.DateTimeProperty(auto_now_add=True)
-
 class MoodPair(db.Model):
   created = db.DateTimeProperty(auto_now_add=True)
   moods   = db.ListProperty(db.Key)
+
+class Mood(db.Model):
+	name = db.StringProperty(required=True)
+	moodpair_id = db.ReferenceProperty(MoodPair, collection_name='moodpair_id')
+	count = db.IntegerProperty(default=0)
+	created = db.DateTimeProperty(auto_now_add=True)
   
 class Stats(db.Model):
-  mood_id = db.StringProperty(db.Key)
+  mood_id = db.ReferenceProperty(Mood, collection_name='mood_id')
   date = db.DateProperty()
   count = db.IntegerProperty(default=0)
+
+def getMoodsForPair(moodpair_id):
+  moodpair = MoodPair.get(moodpair_id)
+  moods    = Mood.get(moodpair.moods)
+  return moods
 
 # increment overall count on mood, and daily count on stats  
 def increment_mood_count(mood_id):
   obj = Mood.get(mood_id)
   obj.count += 1
-  obj.put()
+  key = obj.put()
   
   date = datetime.date.today()
 
   sObj = Stats.all()
-  sObj.filter("mood_id =", mood_id)
+  sObj.filter("mood_id =", key)
   sObj.filter("date =", date)
   stats = sObj.get()
   if not stats:
-    stats = Stats(mood_id=mood_id,
+    stats = Stats(mood_id=key,
                  date=date,
                  count=1)
   else:
@@ -65,14 +72,46 @@ def getStatsForDate(date):
   sObj.filter("date =", date)
   stats = sObj.get()
 
-# Calculate percentage of two values respective to their own
-# returns array containg both percentages.
-def calc_percentage(left, right):
-  percent = []
-  percent.append((1.0*(left + right)/left)*100)
-  percent.append((1.0*(left + right)/right)*100)
-  return percent
+# Get stats for a given date.
+def getTodaysStatsForMoodPair(moodpair_id):
+  date = datetime.date.today()
+  moods = getMoodsForPair(moodpair_id)
+  counts = []
+  statistics = {}
+  #get counts from stats
+  for mood in moods:
+    sObj = Stats.all()
+    sObj.filter("date =", date)
+    sObj.filter("mood_id =", mood.key())
+    stat = sObj.get()
+    if stat:
+      count = stat.count
+    else:
+      count = 0
+      
+    counts.append(count)
+    statistics[mood.name] = count
+  
+  percentage = calc_percentage(statistics)
+  return percentage
 
+# Calculate percentage of two values respective to their own
+# expects a dictionary with two keys with int values
+# returns array containg both percentages.
+def calc_percentage(inputs):
+  thekeys = inputs.keys()
+  thevalues = inputs.values()
+  
+  left = float(thevalues[0])
+  right = float(thevalues[1])
+  sums = float(left + right)
+  percent = []
+  percent.append(int((left / sums)*100))
+  percent.append(int((right / sums)*100))
+
+  d = dict(zip(thekeys, percent))
+  
+  return d
 
 class Greeting(db.Model):
   author = db.UserProperty()
@@ -110,6 +149,7 @@ class MoodList(webapp.RequestHandler):
       myMoods = Mood.get(moodpair.moods)
       for mood in myMoods:
         moodpairs[count].append(mood)
+
       count += 1
     
     template_values = {
@@ -124,8 +164,12 @@ class Vote(webapp.RequestHandler):
     if self.request.get('moodId'):
       mood_id = self.request.get('moodId')
       mood_pair_id = self.request.get('moodPairId')
+
       increment_mood_count(mood_id)
-      self.response.out.write("success")
+
+
+      self.response.out.write(simplejson.dumps({'success':'true'}))
+
     else:
       logging.debug('Nothing to vote on. %s' % self.request.get('moodId'))
         
@@ -133,7 +177,20 @@ class Vote(webapp.RequestHandler):
       self.response.out.write(template.render(path,''))
 
 
-class MainPage(webapp.RequestHandler):
+class MoodStats(webapp.RequestHandler):
+  def get(self):
+    mood_pair_id = self.request.get('moodPairId')
+    
+    stats = getTodaysStatsForMoodPair(mood_pair_id)
+
+    logging.error("HERER %s" % stats)
+    template_values = {
+      'stats': stats,
+    }
+    path = os.path.join(os.path.dirname(__file__), '_moodStats.html')
+    self.response.out.write(template.render(path, template_values))
+
+class DisplayMoodPair(webapp.RequestHandler):
   def get(self):
     moodpairs = []
     count = 0
@@ -143,11 +200,22 @@ class MainPage(webapp.RequestHandler):
       myMoods = Mood.get(moodpair.moods)
       for mood in myMoods:
         moodpairs[count].append(mood)
+        # logging.error('Pair ID. %s' % mood.moodpair_id.key)
+        
       count += 1
-
-
+ 
+ 
     displayMoodPair = random.choice(moodpairs)
-      
+    template_values = {
+      'displayMoodPair': displayMoodPair,
+    }
+
+    path = os.path.join(os.path.dirname(__file__), '_showPair.html')
+    self.response.out.write(template.render(path, template_values))
+    
+class MainPage(webapp.RequestHandler):
+  def get(self):
+    
     if users.get_current_user():
       url = users.create_logout_url(self.request.uri)
       url_linktext = 'Logout'
@@ -156,7 +224,6 @@ class MainPage(webapp.RequestHandler):
       url_linktext = 'Login'
 
     template_values = {
-      'displayMoodPair': displayMoodPair,
       'url': url,
       'url_linktext': url_linktext,
       }
@@ -177,19 +244,22 @@ class MoodAdd(webapp.RequestHandler):
         mood2 = self.request.get('mood2')
 
         if(moodExists(mood1)):
-          errors.append( mood1+" already exists")
+          self.response.out.write( mood1+" already exists")
           return False
         if(moodExists(mood2)):
-          errors.append( mood2+" already exists")
+          self.response.out.write( mood2+" already exists")
           return False
           
         newMoodPair = MoodPair()
-        m1 = Mood(name = mood1)
-        m2 = Mood(name = mood2)
+        mkey = newMoodPair.put()
+        
+        # logging.error('PAIR. %s' % newMoodPair.Key)
+        m1 = Mood(name = mood1, moodpair_id=mkey)
+        m2 = Mood(name = mood2, moodpair_id=mkey)
 
         newMoodPair.moods = [m1.put(), m2.put()]
-        newMoodPair.put()
-        
+        mkey = newMoodPair.put()
+                
         template_values = {
           'errors': errors,
           }
@@ -207,7 +277,9 @@ class Guestbook(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
+                                      ('/displayMoodPair', DisplayMoodPair),
                                       ('/moodList', MoodList),
+                                      ('/moodStats', MoodStats),
                                       ('/vote', Vote),
                                       ('/admini', AdminPage),
                                       ('/add', MoodAdd)],

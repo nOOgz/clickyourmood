@@ -1,0 +1,10 @@
+
+<strong>Today</strong><br />
+
+<div id="moodstats">
+{% for i in stats.items %}
+{{ i.1 }}% voted for {{ i.0 }}<br />
+{% endfor %}
+
+  <br />
+</div>
