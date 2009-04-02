@@ -44,6 +44,15 @@ var vote = {
   loadStats: function() {
     $.get('/moodStats', {moodPairId: vote.moodPairId}, function(data) {
       $('#stats').html(data);
+      var left = $('#stat1').attr('value');
+      var right = $('#stat2').attr('value');
+
+      leftpixel = ((left/100) * 600)|0;
+      rightpixel = ((right/100) * 600)|0;
+      
+      $('#horizontal_stats_bar_left').css("width",leftpixel+"px");
+      $('#horizontal_stats_bar_right').css("width",rightpixel+"px");
+      
 
     });
   }

@@ -1,10 +1,17 @@
 
 <strong>Today</strong><br />
-
+<div id="stat1" value="{{ stats.items.0.1 }}"></div>
+<div id="stat2" value="{{ stats.items.1.1 }}"></div>
 <div id="moodstats">
 {% for i in stats.items %}
 {{ i.1 }}% voted for {{ i.0 }}<br />
 {% endfor %}
+
+<div id="horizontal_stats_bar">
+  <div id="horizontal_stats_bar_left"></div>
+  <div id="horizontal_stats_bar_gaop"></div>
+  <div id="horizontal_stats_bar_right"></div>
+</div>
 
   <br />
 </div>

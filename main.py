@@ -106,8 +106,8 @@ def calc_percentage(inputs):
   right = float(thevalues[1])
   sums = float(left + right)
   percent = []
-  percent.append(int((left / sums)*100))
-  percent.append(int((right / sums)*100))
+  percent.append(int(round((left / sums)*100)))
+  percent.append(int(round((right / sums)*100)))
 
   d = dict(zip(thekeys, percent))
   
@@ -206,12 +206,24 @@ class DisplayMoodPair(webapp.RequestHandler):
  
  
     displayMoodPair = random.choice(moodpairs)
-    template_values = {
-      'displayMoodPair': displayMoodPair,
-    }
-
-    path = os.path.join(os.path.dirname(__file__), '_showPair.html')
-    self.response.out.write(template.render(path, template_values))
+ 
+    counter = 0
+    for mood in displayMoodPair:
+      if (counter == 0):
+        colorClass = 'green'
+      else:
+        colorClass = 'red'
+      template_values = {
+        'moodpair_id': mood.moodpair_id.key(),
+        'mood_id': mood.key(),
+        'mood_name': mood.name,
+        'colorClass': colorClass,
+      }
+      path = os.path.join(os.path.dirname(__file__), '_showPair.html')
+      render = template.render(path, template_values)
+      self.response.out.write(render)
+      counter += 1
+    
     
 class MainPage(webapp.RequestHandler):
   def get(self):
