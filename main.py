@@ -34,6 +34,25 @@ def getMoodsForPair(moodpair_id):
   moods    = Mood.get(moodpair.moods)
   return moods
 
+def getPairForMood(mood_name):
+  
+  mObj = Mood.all()
+  mObj.filter("name =", mood_name)
+  mood = mObj.get()
+  if not (mood):
+    return False
+  else:
+    return mood.moodpair_id.key()
+
+def getIdForMoodName(mood_name):
+  mObj = Mood.all()
+  mObj.filter("name =", mood_name)
+  mood = mObj.get()
+  if not (mood):
+    return False
+  else:
+    return mood.key()
+
 # increment overall count on mood, and daily count on stats  
 def increment_mood_count(mood_id):
   obj = Mood.get(mood_id)
@@ -112,6 +131,15 @@ def calc_percentage(inputs):
   d = dict(zip(thekeys, percent))
   
   return d
+
+def vote_for_mood(mood_name):
+  if mood_name:
+    mood_id = getIdForMoodName(mood_name)
+    if mood_id:
+      increment_mood_count(mood_id)
+      return True
+
+  return False
 
 class Greeting(db.Model):
   author = db.UserProperty()
@@ -203,8 +231,7 @@ class DisplayMoodPair(webapp.RequestHandler):
         # logging.error('Pair ID. %s' % mood.moodpair_id.key)
         
       count += 1
- 
- 
+
     displayMoodPair = random.choice(moodpairs)
  
     counter = 0
@@ -228,17 +255,17 @@ class DisplayMoodPair(webapp.RequestHandler):
 class MainPage(webapp.RequestHandler):
   def get(self):
     
-    if users.get_current_user():
-      url = users.create_logout_url(self.request.uri)
-      url_linktext = 'Logout'
+    mood_name = self.request.get("m")
+    if moodExists(mood_name):
+      moodpair_id = getPairForMood(mood_name)
+      vote_for_mood(mood_name)
+      stats = getTodaysStatsForMoodPair(moodpair_id)
     else:
-      url = users.create_login_url(self.request.uri)
-      url_linktext = 'Login'
+      self.response.out.write("invalid mood, dude")
 
     template_values = {
-      'url': url,
-      'url_linktext': url_linktext,
-      }
+        'stats': stats,
+    }
 
     path = os.path.join(os.path.dirname(__file__), 'index.html')
     self.response.out.write(template.render(path, template_values))

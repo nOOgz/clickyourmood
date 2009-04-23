@@ -11,9 +11,22 @@
       <h1>Click your Mood!</h1>
     </div>
       
-    <div id="moods" align="center"></div>
-    <br />
-    <div id="stats" align="center"></div>
+    <strong>Today</strong><br />
+    <div id="stat1" value="{{ stats.items.0.1 }}"></div>
+    <div id="stat2" value="{{ stats.items.1.1 }}"></div>
+    <div id="moodstats">
+    {% for i in stats.items %}
+    <b>{{ i.1 }}%</b> voted for {{ i.0 }} 
+    {% endfor %}
+
+    <div id="horizontal_stats_bar">
+      <div id="horizontal_stats_bar_left"><span  class="statsbar">{{ stats.items.0.0 }} {{ stats.items.0.1 }}%</span></div>
+      <div id="horizontal_stats_bar_gaop"></div>
+      <div id="horizontal_stats_bar_right"><span  class="statsbar">{{ stats.items.1.0 }} {{ stats.items.1.1 }}%</span></div>
+    </div>
+
+      <br />
+    </div>
     
     <a href="{{ url }}">{{ url_linktext }}</a>
   </div>

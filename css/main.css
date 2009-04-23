@@ -10,22 +10,24 @@ pre,code,kbd,samp,tt { font-family:monospace;*font-size:108%;line-height:100%; }
 .green {color: green; float:right; margin-right: 10px;}
 .red {color: red; float: left; margin-left: 10px;}
 
+.statsbar {font-size: 4em; line-height: 100px;}
+
 #moodInputButton { margin-left: 20px; }
 #moods { padding-top: 100px;}
 #moody { font-size: 33px; color: blue;  }
 #moody label { cursor: pointer; }
 #addMoods { padding: 5px; }
 
-#moodstats {background-color: #FFFFFF; width:700px; height: 300px; border: 1px solid black;}
+#moodstats {background-color: #FFFFFF; width:700px; height: 200px; border: 1px solid black;}
 
-#horizontal_stats_bar { background-color: #FFFFFF; height: 50px; width: 610px; 
+#horizontal_stats_bar { background-color: #FFFFFF; height: 100px; width: 610px; 
       border-top: 1px solid black; border-bottom: 1px solid black;
-      margin-top: 90px; }
+      margin-top: 30px; }
 
-#horizontal_stats_bar_left { background-color: green; height: 50px; float:left; border-left: 1px solid black;}
+#horizontal_stats_bar_left { background-color: green; height: 100px; float:left; border-left: 1px solid black;}
 
 #horizontal_stats_bar_gap { background-color: #FFFFFF; 
       height: 50px; float:left; width: 3px;}
 
-#horizontal_stats_bar_right { background-color: red; height: 50px; float:right; border-right: 1px solid black;}
+#horizontal_stats_bar_right { background-color: red; height: 100px; float:right; border-right: 1px solid black;}
 
