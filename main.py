@@ -256,15 +256,15 @@ class MainPage(webapp.RequestHandler):
   def get(self):
     
     mood_name = self.request.get("m")
+    stats = ''
     if moodExists(mood_name):
       moodpair_id = getPairForMood(mood_name)
       vote_for_mood(mood_name)
       stats = getTodaysStatsForMoodPair(moodpair_id)
-    else:
-      self.response.out.write("invalid mood, dude")
 
     template_values = {
         'stats': stats,
+        'external': True
     }
 
     path = os.path.join(os.path.dirname(__file__), 'index.html')

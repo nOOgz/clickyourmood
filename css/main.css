@@ -10,7 +10,7 @@ pre,code,kbd,samp,tt { font-family:monospace;*font-size:108%;line-height:100%; }
 .green {color: green; float:right; margin-right: 10px;}
 .red {color: red; float: left; margin-left: 10px;}
 
-.statsbar {font-size: 4em; line-height: 100px;}
+.statsbar {font-size: 3em; line-height: 100px;}
 
 #moodInputButton { margin-left: 20px; }
 #moods { padding-top: 100px;}
@@ -18,7 +18,7 @@ pre,code,kbd,samp,tt { font-family:monospace;*font-size:108%;line-height:100%; }
 #moody label { cursor: pointer; }
 #addMoods { padding: 5px; }
 
-#moodstats {background-color: #FFFFFF; width:700px; height: 200px; border: 1px solid black;}
+#moodstats {background-color: #FFFFFF; width:700px; height: 200px; border: 1px solid black; padding-top:10px; font-size: large;}
 
 #horizontal_stats_bar { background-color: #FFFFFF; height: 100px; width: 610px; 
       border-top: 1px solid black; border-bottom: 1px solid black;

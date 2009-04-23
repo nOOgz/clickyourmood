@@ -47,6 +47,7 @@ var vote = {
       var left = $('#stat1').attr('value');
       var right = $('#stat2').attr('value');
 
+
       leftpixel = ((left/100) * 600)|0;
       rightpixel = ((right/100) * 600)|0;
       
@@ -55,5 +56,6 @@ var vote = {
       
 
     });
-  }
+  },
+
 }
