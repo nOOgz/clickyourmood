@@ -1,5 +1,5 @@
 /* YUI Fonts - Shifted from 13px to 11px */
-body { font:11px/1.231 'Lucida Grande','Lucida Sans',Lucida,Arial,Helvetica,clean,sans-serif;*font-size:small;*font:x-small; background-color: #DDDDDD;}
+body { font:11px/1.231 'Lucida Grande','Lucida Sans',Lucida,Arial,Helvetica,clean,sans-serif;*font-size:small;*font:x-small; background-color: #FFFFFF;}
 
 select,input,button,textarea { font:99% 'Lucida Grande','Lucida Sans',Lucida,Arial,Helvetica,clean,sans-serif; }
 table {	font-size:inherit;font:100%; }
@@ -7,11 +7,12 @@ pre,code,kbd,samp,tt { font-family:monospace;*font-size:108%;line-height:100%; }
 
 .error {color: #990000}
 
-.green {color: green; float:right; margin-right: 10px;}
-.red {color: red; float: left; margin-left: 10px;}
+.green {color: #3399cc; float:right; margin-right: 10px;}
+.red {color: #fc0082; float: left; margin-left: 10px;}
 
 .statsbar {font-size: 3em; line-height: 100px;}
 
+#header {background-image: "/img/logo.png";}
 #moodInputButton { margin-left: 20px; }
 #moods { padding-top: 100px;}
 #moody { font-size: 33px; color: blue;  }
@@ -24,10 +25,10 @@ pre,code,kbd,samp,tt { font-family:monospace;*font-size:108%;line-height:100%; }
       border-top: 1px solid black; border-bottom: 1px solid black;
       margin-top: 30px; }
 
-#horizontal_stats_bar_left { background-color: green; height: 100px; float:left; border-left: 1px solid black;}
+#horizontal_stats_bar_left { background-color: #3399cc; height: 100px; float:left; border-left: 1px solid black;}
 
 #horizontal_stats_bar_gap { background-color: #FFFFFF; 
       height: 50px; float:left; width: 3px;}
 
-#horizontal_stats_bar_right { background-color: red; height: 100px; float:right; border-right: 1px solid black;}
+#horizontal_stats_bar_right { background-color: #fc0082; height: 100px; float:right; border-right: 1px solid black;}
 
